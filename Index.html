@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMSC · Portail Client</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- RESET & BASE ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: #f0f4f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .portal-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      min-height: 85vh;
+      background: #ffffff;
+      border-radius: 32px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* ----- COOKIE BANNER ----- */
+    .cookie-banner {
+      background: #f0f4f9;
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+      color: #3d5268;
+      flex-shrink: 0;
+    }
+
+    .cookie-banner .accept-btn {
+      background: #0a2540;
+      color: white;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    .cookie-banner .accept-btn:hover {
+      background: #1a3a5c;
+    }
+
+    /* ----- HERO / LOGIN SECTION ----- */
+    .hero-section {
+      display: flex;
+      flex: 1;
+      padding: 48px 56px;
+      gap: 48px;
+      background: linear-gradient(170deg, #fafcff 0%, #f0f5fc 100%);
+      align-items: center;
+      min-height: 70vh;
+    }
+
+    .hero-left {
+      flex: 1.3;
+      min-width: 300px;
+    }
+
+    .hero-left .badge {
+      display: inline-block;
+      background: #0a2540;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 20px;
+      border-radius: 30px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-left h1 {
+      font-size: 44px;
+      font-weight: 600;
+      color: #0a2540;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .hero-left h1 span {
+      color: #1a6b3b;
+    }
+
+    .hero-left .subhead {
+      color: #5b6f82;
+      font-size: 18px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    .benefits {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 16px;
+      color: #1e2f40;
+      font-weight: 500;
+    }
+
+    .benefit-item .check-icon {
+      background: #e4f3ea;
+      color: #1a6b3b;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .member-btn {
+      background: #0a2540;
+      color: white;
+      border: none;
+      padding: 16px 44px;
+      border-radius: 40px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .member-btn:hover {
+      background: #1a3a5c;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(10, 37, 64, 0.25);
+    }
+
+    .support-email {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #5b6f82;
+    }
+
+    .support-email a {
+      color: #0a2540;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .support-email a:hover {
+      text-decoration: underline;
+    }
+
+    /* ----- LOGIN FORM ----- */
+    .hero-right {
+      flex: 1;
+      min-width: 280px;
+      max-width: 440px;
+      background: #ffffff;
+      padding: 36px 40px;
+      border-radius: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e8eef5;
+    }
+
+    .hero-right .form-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #0a2540;
+      margin-bottom: 4px;
+    }
+
+    .hero-right .form-sub {
+      font-size: 15px;
+      color: #5b6f82;
+      margin-bottom: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1e2f40;
+      margin-bottom: 6px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid #d8e0e8;
+      border-radius: 14px;
+      font-size: 15px;
+      background: #fafcff;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #0a2540;
+      box-shadow: 0 0 0 3px rgba(10, 37, 64, 0.06);
+      background: white;
+    }
+
+    .login-btn {
+      width: 100%;
+      background: #0a2540;
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+
+    .login-btn:hover {
+      background: #123456;
+    }
+
+    .login-error {
+      color: #b33c3c;
+      font-size: 14px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* ----- DASHBOARD ----- */
+    #dashboardSection {
+      display: none;
+      flex: 1;
+      padding: 32px 48px 40px 48px;
+      flex-direction: column;
+      background: #fafcff;
+    }
+
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 0 0 20px 0;
+      border-bottom: 1px solid #e6edf4;
+      flex-shrink: 0;
+    }
+
+    .dash-header .greeting h2 {
+      font-size: 26px;
+      font-weight: 600;
+      color: #0a2540;
+    }
+
+    .dash-header .greeting small {
+      display: block;
+      font-size: 14px;
+      font-weight: 400;
+      color: #5b6f82;
+      margin-top: 2px;
+    }
+
+    .dash-header .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .dash-header .client-badge {
+      background: #eef4fa;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 14px;
+      color: #1a2e44;
+      font-weight: 500;
+    }
+
+    .logout-top-btn {
+      background: transparent;
+      border: 1px solid #d0dce8;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #3d5268;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .logout-top-btn:hover {
+      background: #f0f4f9;
+      border-color: #a0b4c8;
+    }
+
+    .dash-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 24px;
+      gap: 24px;
+    }
+
+    /* ----- BALANCE CARD ----- */
+    .balance-card {
+      background: linear-gradient(145deg, #f8faff, #eef4fa);
+      border-radius: 20px;
+      padding: 28px 32px;
+      border: 1px solid #dce6f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .balance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .balance-header .label {
+      font-size: 15px;
+      color: #3d5268;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .balance-header .label i {
+      color: #b38f00;
+    }
+
+    .balance-header .total {
+      text-align: right;
+    }
+
+    .balance-header .total .amount {
+      font-size: 42px;
+      font-weight: 700;
+      color: #0a2540;
+      letter-spacing: -0.5px;
+    }
+
+    .balance-header .total .amount small {
+      font-size: 20px;
+      font-weight: 400;
+      color: #3d5268;
+      margin-left: 6px;
+    }
+
+    .balance-header .total .status {
+      font-size: 13px;
+      color: #b38f00;
+      background: #fef6e0;
+      padding: 4px 18px;
+      border-radius: 30px;
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    /* ----- CRYPTO BREAKDOWN ----- */
+    .crypto-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      padding-top: 22px;
+      border-top: 1px solid #dce6f0;
+    }
+
+    .crypto-item {
+      background: #ffffff;
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 1px solid #e8eef5;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+    }
+
+    .crypto-item:hover {
+      border-color: #b8ccdd;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .crypto-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .crypto-icon.btc { background: #f7931a; }
+    .crypto-icon.eth { background: #627eea; }
+    .crypto-icon.usdc { background: #2775ca; }
+    .crypto-icon.other { background: #6b7b8d; }
+
+    .crypto-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .crypto-info .symbol {
+      font-weight: 600;
+      font-size: 15px;
+      color: #0a2540;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .crypto-info .amount-crypto {
+      font-size: 13px;
+      color: #5b6f82;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .crypto-item .right {
+      text-align: right;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .crypto-item .right .value-eur {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0a2540;
+      white-space: nowrap;
+    }
+
+    /* ----- EXTERNAL EXCHANGE CARD ----- */
+    .external-exchange-card {
+      background: #f0f7fe;
+      border-radius: 20px;
+      padding: 28px 32px;
+      border: 2px solid #0a2540;
+      border-style: dashed;
+    }
+
+    .external-exchange-card .title {
+      font-weight: 600;
+      font-size: 20px;
+      color: #0a2540;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .external-exchange-card .title i {
+      color: #1a6b3b;
+    }
+
+    .external-exchange-card .description {
+      color: #1e3347;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 12px 0 18px 0;
+    }
+
+    .external-exchange-card .description strong {
+      color: #0a2540;
+    }
+
+    .external-exchange-card .highlight {
+      background: white;
+      padding: 18px 24px;
+      border-radius: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .external-exchange-card .highlight .amount-needed {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a6b3b;
+    }
+
+    .external-exchange-card .highlight .amount-needed small {
+      font-size: 18px;
+      font-weight: 400;
+      color: #3d5268;
+    }
+
+    .external-btn {
+      color: white;
+      border: none;
+      padding: 16px 38px;
+      border-radius: 40px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+      justify-content: center;
+    }
+
+    .external-btn.normal {
+      background: #1a6b3b;
+    }
+
+    .external-btn.normal:hover:not(:disabled) {
+      background: #0f552e;
+      transform: scale(1.02);
+      box-shadow: 0 8px 18px rgba(26, 107, 59, 0.2);
+    }
+
+    .external-btn.warning {
+      background: #b33c3c;
+    }
+
+    .external-btn.warning:hover:not(:disabled) {
+      background: #8a2e2e;
+    }
+
+    .external-btn:disabled {
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .fee-explanation {
+      background: #f9fbfd;
+      padding: 18px 24px;
+      border-radius: 16px;
+      margin: 16px 0 0 0;
+      border-left: 4px solid #0a2540;
+      font-size: 15px;
+      color: #1e3347;
+      line-height: 1.7;
+      display: none; /* Hidden until converted */
+    }
+
+    .fee-explanation strong {
+      color: #0a2540;
+    }
+
+    .fee-explanation .fee-amount {
+      font-weight: 700;
+      color: #b33c3c;
+    }
+
+    /* Spinner Animation */
+    .fa-spinner {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .withdrawal-details {
+      background: #f3f8ff;
+      border-radius: 16px;
+      padding: 18px 24px;
+      border: 1px solid #d0dce8;
+    }
+
+    .withdrawal-details .title {
+      font-weight: 600;
+      color: #0a2540;
+      margin-bottom: 12px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .withdrawal-details .detail-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 28px;
+      font-size: 15px;
+      color: #1e3a5c;
+      padding: 4px 0;
+    }
+
+    .withdrawal-details .detail-row span:first-child {
+      font-weight: 500;
+      color: #3d5268;
+      min-width: 110px;
+    }
+
+    .support-footer {
+      text-align: center;
+      padding: 18px 0 0 0;
+      border-top: 1px solid #e6edf4;
+      margin-top: 8px;
+      font-size: 14px;
+      color: #5b6f82;
+      flex-shrink: 0;
+    }
+
+    .support-footer a {
+      color: #0a2540;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .support-footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-section {
+        padding: 36px 32px;
+        gap: 32px;
+      }
+      .hero-left h1 {
+        font-size: 36px;
+      }
+      .balance-header .total .amount {
+        font-size: 34px;
+      }
+      #dashboardSection {
+        padding: 24px 28px 32px 28px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      html, body {
+        padding: 12px;
+      }
+      .portal-wrapper {
+        border-radius: 20px;
+        min-height: 92vh;
+      }
+      .hero-section {
+        flex-direction: column;
+        padding: 28px 24px;
+        gap: 28px;
+        min-height: unset;
+      }
+      .hero-left h1 {
+        font-size: 30px;
+      }
+      .hero-left .subhead {
+        font-size: 16px;
+      }
+      .hero-right {
+        max-width: 100%;
+        width: 100%;
+        padding: 28px 24px;
+      }
+      .balance-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .balance-header .total {
+        text-align: left;
+      }
+      .balance-header .total .amount {
+        font-size: 30px;
+      }
+      .crypto-breakdown {
+        grid-template-columns: 1fr;
+      }
+      .external-exchange-card .highlight {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .external-btn {
+        width: 100%;
+        min-width: unset;
+      }
+      .dash-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .dash-header .right-actions {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      #dashboardSection {
+        padding: 16px 18px 24px 18px;
+      }
+      .cookie-banner {
+        padding: 12px 18px;
+        font-size: 13px;
+      }
+      .cookie-banner .accept-btn {
+        padding: 6px 18px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-left h1 {
+        font-size: 26px;
+      }
+      .member-btn {
+        padding: 14px 28px;
+        font-size: 15px;
+        width: 100%;
+        justify-content: center;
+      }
+      .external-exchange-card {
+        padding: 20px;
+      }
+      .external-exchange-card .title {
+        font-size: 17px;
+      }
+      .external-exchange-card .highlight .amount-needed {
+        font-size: 22px;
+      }
+      .withdrawal-details .detail-row {
+        font-size: 14px;
+        gap: 4px 16px;
+      }
+      .withdrawal-details .detail-row span:first-child {
+        min-width: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="portal-wrapper">
+
+  <!-- COOKIE BANNER -->
+  <div class="cookie-banner">
+    <span><i class="fas fa-cookie-bite" style="margin-right: 8px; color: #b38f00;"></i> Ce site utilise des cookies pour vous offrir la meilleure expérience possible.</span>
+    <button class="accept-btn" id="cookieAccept">J'accepte</button>
+  </div>
+
+  <!-- ========== LOGIN SECTION ========== -->
+  <div id="loginSection" class="hero-section">
+    <div class="hero-left">
+      <div class="badge"><i class="fas fa-shield-alt" style="margin-right: 6px;"></i> Partenaire de Confiance</div>
+      <h1>Rejoignez-nous pour un <span>CMSC sécurisé</span></h1>
+      <p class="subhead">Votre passerelle vers des conversions crypto-euros conformes et transparentes.</p>
+      <div class="benefits">
+        <div class="benefit-item"><span class="check-icon"><i class="fas fa-check"></i></span> Figurer sur la liste des entreprises de confiance</div>
+        <div class="benefit-item"><span class="check-icon"><i class="fas fa-check"></i></span> Assurer la sécurité des intérêts des clients</div>
+        <div class="benefit-item"><span class="check-icon"><i class="fas fa-check"></i></span> Bénéficier de l'attention du public</div>
+      </div>
+      <button class="member-btn" id="memberBtn"><i class="fas fa-user-plus"></i> Devenir membre</button>
+      <div class="support-email"><i class="far fa-envelope" style="margin-right: 6px;"></i> Support : <a href="mailto:contact@cms-commission.com">contact@cms-commission.com</a></div>
+    </div>
+
+    <div class="hero-right">
+      <div class="form-title">Portail CMSC</div>
+      <div class="form-sub">Connectez-vous à votre tableau de bord</div>
+      <div class="input-group">
+        <label for="loginEmail">Adresse e-mail</label>
+        <input type="email" id="loginEmail" placeholder="leruth.pf@gmail.com" value="leruth.pf@gmail.com">
+      </div>
+      <div class="input-group">
+        <label for="loginPassword">Numéro de compte (mot de passe)</label>
+        <input type="password" id="loginPassword" placeholder="Entrez votre numéro de compte" value="Leruth123456">
+      </div>
+      <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Se connecter</button>
+      <div class="login-error" id="loginError">Identifiants invalides. Veuillez vérifier votre e-mail et votre numéro de compte.</div>
+    </div>
+  </div>
+
+  <!-- ========== DASHBOARD ========== -->
+  <div id="dashboardSection">
+
+    <!-- HEADER -->
+    <div class="dash-header">
+      <div class="greeting">
+        <h2>Bonjour, Leruth Pierre-François</h2>
+        <small>Portail CMSC — Déclaration Q3 / Q4 en attente</small>
+      </div>
+      <div class="right-actions">
+        <div class="client-badge"><i class="far fa-id-card" style="margin-right: 8px;"></i> Compte : 1022889</div>
+        <button class="logout-top-btn" id="logoutBtn"><i class="fas fa-sign-out-alt" style="margin-right: 6px;"></i> Se déconnecter</button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="dash-content">
+
+      <!-- BALANCE CARD -->
+      <div class="balance-card">
+        <div class="balance-header">
+          <div class="label" id="balanceLabel"><i class="fas fa-coins"></i> Actifs en garde (USDT)</div>
+          <div class="total">
+            <div class="amount" id="balanceAmount">1 430 351,00 <small>USDT</small></div>
+            <div class="status" id="balanceStatus"><i class="fas fa-clock"></i> En attente de déclaration Q3 / Q4</div>
+          </div>
+        </div>
+
+        <!-- Crypto breakdown -->
+        <div class="crypto-breakdown">
+          <div class="crypto-item">
+            <div class="crypto-icon btc">₿</div>
+            <div class="crypto-info">
+              <div class="symbol">Bitcoin</div>
+              <div class="amount-crypto">10,45 BTC</div>
+            </div>
+            <div class="right">
+              <div class="value-eur">675 913 $</div>
+            </div>
+          </div>
+          
+          <div class="crypto-item">
+            <div class="crypto-icon eth">⟠</div>
+            <div class="crypto-info">
+              <div class="symbol">Ethereum</div>
+              <div class="amount-crypto">154,30 ETH</div>
+            </div>
+            <div class="right">
+              <div class="value-eur">482 188 $</div>
+            </div>
+          </div>
+          
+          <div class="crypto-item">
+            <div class="crypto-icon usdc">$</div>
+            <div class="crypto-info">
+              <div class="symbol">USDC</div>
+              <div class="amount-crypto">196 500 USDC</div>
+            </div>
+            <div class="right">
+              <div class="value-eur">182 350 $</div>
+            </div>
+          </div>
+          
+          <div class="crypto-item">
+            <div class="crypto-icon other">◈</div>
+            <div class="crypto-info">
+              <div class="symbol">Autres actifs</div>
+              <div class="amount-crypto">Divers</div>
+            </div>
+            <div class="right">
+              <div class="value-eur">89 900 $</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXTERNAL EXCHANGE CARD -->
+      <div class="external-exchange-card">
+        <div class="title"><i class="fas fa-arrow-right-to-bracket"></i> Échange externe requis (Conversion en EUR)</div>
+        
+        <div class="description" id="exchangeDescription">
+          Pour traiter votre retrait, nous devons convertir vos fonds USDT en euros fiat (EUR). Pour ce faire, nous sommes tenus de faire appel à un service d'échange externe. Une fois vos fonds convertis en euros, nous pourrons déclarer vos gains et transférer le montant sur votre compte bancaire.<br><br>
+          <strong>Pour réaliser cet échange externe, nous devons payer un tiers pour les coûts associés à la conversion des fonds et à la fourniture de liquidités. Étant une organisation à but non lucratif, nous ne pouvons pas couvrir ces coûts nous-mêmes. De plus, nous ne pouvons pas utiliser les cryptomonnaies actuellement détenues pour payer le service d'échange externe, car elles sont conservées dans un portefeuille complètement séparé dans le but de taxer les gains.</strong>
+        </div>
+
+        <div class="highlight">
+          <div>
+            <div style="font-size:15px; color:#3d5268;">Montant à échanger</div>
+            <div class="amount-needed" id="exchangeAmount">1 430 351,00 <small>USDT</small></div>
+          </div>
+          <button class="external-btn normal" id="externalExchangeBtn">
+            <i class="fas fa-external-link-alt"></i> Convertir les fonds
+          </button>
+        </div>
+
+        <!-- Fee explanation dynamically revealed -->
+        <div class="fee-explanation" id="feeExplanation">
+          <!-- Content injected via JS -->
+        </div>
+      </div>
+
+      <!-- WITHDRAWAL DETAILS -->
+      <div class="withdrawal-details">
+        <div class="title"><i class="fas fa-university"></i> Destination du retrait (après échange)</div>
+        <div class="detail-row"><span>Bénéficiaire</span> <span>Leruth Pierre-François</span></div>
+        <div class="detail-row"><span>Banque</span> <span>VIVID</span></div>
+        <div class="detail-row"><span>IBAN</span> <span>DE59 2022 0800 0043 3537 43</span></div>
+        <div class="detail-row" style="margin-top:6px; color:#1a5e9c; font-size:14px;">
+          <i class="fas fa-clock" style="color:#b38f00;"></i> Les fonds seront envoyés après confirmation de l'échange externe.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="support-footer">
+      <i class="far fa-envelope" style="margin-right: 6px;"></i> Besoin d'aide ? Contactez-nous à <a href="mailto:contact@cms-commission.com">contact@cms-commission.com</a>
+    </div>
+  </div>
+  <!-- end dashboard -->
+
+</div>
+
+<script>
+  (function() {
+    // DOM refs
+    const loginSection = document.getElementById('loginSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+    const loginEmail = document.getElementById('loginEmail');
+    const loginPassword = document.getElementById('loginPassword');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const externalBtn = document.getElementById('externalExchangeBtn');
+    const memberBtn = document.getElementById('memberBtn');
+    const cookieBtn = document.getElementById('cookieAccept');
+    const feeExplanation = document.getElementById('feeExplanation');
+    const exchangeAmount = document.getElementById('exchangeAmount');
+    const balanceAmount = document.getElementById('balanceAmount');
+    const balanceLabel = document.getElementById('balanceLabel');
+    const balanceStatus = document.getElementById('balanceStatus');
+
+    // ----- UPDATED CREDENTIALS -----
+    const VALID_EMAIL = 'leruth.pf@gmail.com';
+    const VALID_PASSWORD = 'Leruth123456';
+
+    let buttonClicked = false;
+
+    // Cookie
+    cookieBtn.addEventListener('click', function() {
+      this.closest('.cookie-banner').style.display = 'none';
+    });
+
+    // Member
+    memberBtn.addEventListener('click', function() {
+      alert('Le formulaire d\'adhésion s\'ouvrirait ici.\nMerci de votre intérêt pour CMSC.');
+    });
+
+    // ----- LOGIN -----
+    function attemptLogin() {
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value.trim();
+
+      if (email === VALID_EMAIL && password === VALID_PASSWORD) {
+        loginError.style.display = 'none';
+        loginSection.style.display = 'none';
+        dashboardSection.style.display = 'flex';
+        buttonClicked = false;
+        resetUI();
+      } else {
+        loginError.style.display = 'block';
+        loginError.style.animation = 'none';
+        setTimeout(() => loginError.style.animation = 'shake 0.3s ease', 10);
+      }
+    }
+
+    function resetUI() {
+      externalBtn.className = 'external-btn normal';
+      externalBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Convertir les fonds';
+      externalBtn.disabled = false;
+      feeExplanation.style.display = 'none';
+      feeExplanation.innerHTML = '';
+      exchangeAmount.innerHTML = '1 430 351,00 <small>USDT</small>';
+      
+      // Reset Balance Card
+      balanceAmount.innerHTML = '1 430 351,00 <small>USDT</small>';
+      balanceLabel.innerHTML = '<i class="fas fa-coins"></i> Actifs en garde (USDT)';
+      balanceStatus.innerHTML = '<i class="fas fa-clock"></i> En attente de déclaration Q3 / Q4';
+      balanceStatus.style.color = '#b38f00';
+      balanceStatus.style.background = '#fef6e0';
+    }
+
+    loginPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
+    loginEmail.addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
+    loginBtn.addEventListener('click', attemptLogin);
+
+    // ----- LOGOUT -----
+    logoutBtn.addEventListener('click', function() {
+      dashboardSection.style.display = 'none';
+      loginSection.style.display = 'flex';
+      loginError.style.display = 'none';
+      loginPassword.value = '';
+      buttonClicked = false;
+      resetUI();
+    });
+
+    // ----- EXTERNAL EXCHANGE LOGIC -----
+    externalBtn.addEventListener('click', function() {
+      if (buttonClicked) return;
+      buttonClicked = true;
+      
+      // 1. Simulate Processing Animation
+      externalBtn.className = 'external-btn warning';
+      externalBtn.innerHTML = '<i class="fas fa-spinner"></i> Traitement de la conversion...';
+      externalBtn.disabled = true;
+
+      // 2. Wait 2 seconds to simulate external exchange processing
+      setTimeout(() => {
+        // Calculate exchange fee in EUR (1.3032% of 1,430,351)
+        const grossAmount = 1430351.00;
+        const feePercent = 0.013032;
+        const feeEUR = grossAmount * feePercent; // Exactly 18,639.99 (rounds to 18,640)
+        const netAmount = grossAmount - feeEUR; // Exactly 1,411,711
+
+        // Format numbers for display
+        const formattedGross = grossAmount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const formattedFee = feeEUR.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const formattedNet = netAmount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // 3. Update UI to show conversion complete (Euros)
+        externalBtn.innerHTML = '<i class="fas fa-check-circle"></i> Fonds convertis en EUR';
+        
+        // Show final amount in Euros, but keep USDT reference below for easy checking
+        exchangeAmount.innerHTML = `${formattedNet} € <small>EUR</small><br><span style="font-size: 16px; color:#5b6f82; font-weight:400;">(Équivalent à 1 430 351,00 USDT)</span>`;
+        
+        // Update main balance card to reflect converted amount
+        balanceAmount.innerHTML = `${formattedNet} € <small>EUR</small>`;
+        balanceLabel.innerHTML = '<i class="fas fa-coins"></i> Solde converti (EUR)';
+        balanceStatus.innerHTML = '<i class="fas fa-check-circle" style="color:#1a6b3b;"></i> Conversion terminée';
+        balanceStatus.style.color = '#1a6b3b';
+        balanceStatus.style.background = '#e4f3ea';
+        
+        // 4. Show Fee Explanation with proper French text (adapted to USDT -> EUR)
+        feeExplanation.innerHTML = `
+          <i class="fas fa-info-circle" style="margin-right: 10px; color: #0a2540;"></i>
+          <strong>Frais d'échange requis (1.3032 %) : ${formattedFee} €</strong><br><br>
+          Ces frais nous permettront de convertir rapidement vos fonds USDT en euros et d'initier le processus de déclaration fiscale, après quoi les fonds pourront être transférés sur votre compte bancaire.<br><br>
+          CMSC garantit un échange sûr et sécurisé, ainsi qu'un transfert rapide des fonds sur votre compte bancaire personnel.
+        `;
+        feeExplanation.style.display = 'block';
+        
+        // Change button text to indicate completion
+        setTimeout(() => {
+          externalBtn.innerHTML = '<i class="fas fa-hourglass-half"></i> En attente de confirmation';
+        }, 2000);
+
+      }, 2000); // 2 second delay
+    });
+
+    // Shake animation
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20% { transform: translateX(-8px); }
+        40% { transform: translateX(8px); }
+        60% { transform: translateX(-4px); }
+        80% { transform: translateX(4px); }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+
+  })();
+</script>
+</body>
+</html>
